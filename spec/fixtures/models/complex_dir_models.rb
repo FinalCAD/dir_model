@@ -1,3 +1,9 @@
+class ZoneBimModelImportDirModel
+  include DirModel::Model
+  include DirModel::Import
+  file :metadata, regex: ->(foreign_value) { "Zones\/#{foreign_value}\.(?<extension>dae)" }
+end
+
 class ZoneMetadataImportDirModel
   include DirModel::Model
   include DirModel::Import
@@ -9,6 +15,7 @@ class ZoneImportDirModel
   include DirModel::Import
   file :image, regex: ->(foreign_value) { "Zones\/(?<sector_name>#{foreign_value})\/Zone_(?<zone_id>.*)\.(?<extension>png|jpg)" }
   has_one :metadata, ZoneMetadataImportDirModel, foreign_key: :sector_zone_name
+  has_one :bim_model, ZoneBimModelImportDirModel, foreign_key: :sector_zone_name
   def sector_zone_name
     "#{sector_name}\/zone_#{zone_id}"
   end

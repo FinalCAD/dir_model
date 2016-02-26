@@ -41,7 +41,9 @@ module DirModel
         if dir_model.has_relations?
           if dir_model.has_one?
             child = search(path, context) do |_path, _context|
-              dir_model.append_dir_model(_path.current_path, index: _path.index, context: _context)
+              self.has_one_relationship.each do |relation_name, _options|
+                dir_model.append_dir_model(_path.current_path, index: _path.index, context: _context, relation_name: relation_name, options: _options)
+              end
             end.first
             find_relations(child, path, context) if child
           end
