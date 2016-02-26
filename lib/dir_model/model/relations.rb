@@ -79,9 +79,9 @@ module DirModel
         # @param [Symbol] relation_name the name of the relation
         # @param [DirModel::Import] dir_model_class class of the relation
         def has_one(relation_name, dir_model_class, options)
-          raise "for now, DirModel's has_one may only be called once" if @_has_one_relationship.present?
-
           relation_name = relation_name.to_sym
+
+          raise "has_one :#{relation_name} is already defined" if @_has_one_relationship && @_has_one_relationship.has_key?(relation_name)
 
           merge_has_one_relationship(relation_name => { dir_model_class: dir_model_class }.merge(options))
 
