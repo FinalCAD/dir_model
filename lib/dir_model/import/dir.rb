@@ -46,6 +46,12 @@ module DirModel
         current_dir_model
       end
 
+      def first(context={})
+        each(context).next
+      rescue StopIteration
+        nil
+      end
+
       private
 
       def skip?

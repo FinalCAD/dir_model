@@ -21,6 +21,37 @@ describe DirModel::Import::Dir do
     ]
   end
 
+  describe "#first" do
+    let(:model_class) do
+      Class.new do
+        include DirModel::Model
+        include DirModel::Import
+
+        file :image, regex: -> { /Zones\/Sector_#{sector_name}\/Zone_(?<zone_id>.*)\.(?<extension>png|jpg)/i }
+
+        def sector_name
+          context.sector_name
+        end
+      end
+    end
+
+    let(:instance) { described_class.new source_path, model_class, sector_name: 1 }
+
+    subject { instance.first }
+
+    it "returns the first file found" do
+      expect(subject.source_path).to eql "spec/fixtures/unzip_dir/zones/sector_1/zone_1.png"
+    end
+
+    context "with no first" do
+      let(:source_path) { 'some_invalid_dir' }
+
+      it "returns nil" do
+        expect(subject).to eql nil
+      end
+    end
+  end
+
   # describe '#context' do
   #   it 'symbolizes the context' do
   #     expect(instance.context[:some_context]).to eql(true)

@@ -49,4 +49,20 @@ describe DirModel::Import do
     end
   end
 
+  describe "#get_regexp" do
+    subject { instance.send(:get_regexp) }
+
+    context "when proc that implements #instance_exec" do
+      before do
+        klass.class_eval do
+          file :blah, regex: -> { /some_#{custom}_stuff/ }
+          def custom; "waka" end
+        end
+      end
+
+      it "calls instance exec to generate the regex" do
+        expect(subject.to_s).to eql "(?-mix:some_waka_stuff)"
+      end
+    end
+  end
 end
