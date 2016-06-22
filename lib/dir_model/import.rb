@@ -95,6 +95,8 @@ module DirModel
       else
         self.class.options[:regex].call
       end
+    rescue NameError
+      instance_exec(&self.class.options[:regex])
     end
   end
 end
