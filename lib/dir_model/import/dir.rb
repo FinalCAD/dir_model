@@ -1,9 +1,13 @@
-require 'forwardable'
+require 'active_model'
 
 module DirModel
   module Import
     class Dir # File
-      extend Forwardable
+      extend ActiveModel::Callbacks
+
+      define_model_callbacks :next
+
+      delegate :size, :index, :end?, to: :path
 
       attr_reader :index
       attr_reader :path
@@ -11,8 +15,6 @@ module DirModel
       attr_reader :context
       attr_reader :current_dir_model
       attr_reader :previous_dir_model
-
-      def_delegators :@path, :end?
 
       def initialize(source_path, import_dir_model_class, context={})
         @path, @import_dir_model_class, @context = Path.new(source_path), import_dir_model_class, context.to_h.symbolize_keys
@@ -37,11 +39,13 @@ module DirModel
       def next(context={})
         return if end?
 
-        context = context.to_h.reverse_merge(self.context)
-        @previous_dir_model = current_dir_model
-        @current_dir_model = import_dir_model_class.next(path, context, previous_dir_model)
-        @index += 1
-        @current_dir_model = @index = nil if end?
+        run_callbacks :next do
+          context = context.to_h.reverse_merge(self.context)
+          @previous_dir_model = current_dir_model
+          @current_dir_model  = import_dir_model_class.next(path, context, previous_dir_model)
+          @index += 1
+          @current_dir_model = @index = nil if end?
+        end
 
         current_dir_model
       end

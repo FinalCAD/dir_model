@@ -1,5 +1,9 @@
 # Upgrading
 
+# Upgrading from 0.7.0 to 0.7.1
+
+Nothing
+
 # Upgrading from 0.6.2 to 0.7.0
 
 * Change the manner of call AggregateDir like
