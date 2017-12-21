@@ -1,6 +1,10 @@
+### VERSION 0.7.1
+
+ Add `ActiveModel::Callbacks` to play around next, basically tracking progress
+
 ### VERSION 0.7.0
 
-* Change the design of `AggregateDir` to make it composable 
+* Change the design of `AggregateDir` to make it composable
 
 ### VERSION 0.6.2
 

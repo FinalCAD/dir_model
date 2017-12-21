@@ -112,6 +112,23 @@ class SectorImportDirModel < SectorDirModel
 end
 ```
 
+### Import Callbacks
+`DirModel::Import::Dir` can be subclassed to access
+[`ActiveModel::Callbacks`](http://api.rubyonrails.org/classes/ActiveModel/Callbacks.html).
+
+* next - `before`, `around`, or `after` each change in `current_dir_model`
+
+and implement the callbacks:
+```ruby
+class ImportDir < DirModel::Import::Dir
+  before_next :track_progress
+
+  def track_progress
+    ...
+  end
+end
+```
+
 ### Export
 
 ```ruby
