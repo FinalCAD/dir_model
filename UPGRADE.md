@@ -1,5 +1,50 @@
 # Upgrading
 
+# Upgrading from 0.6.2 to 0.7.0
+
+* Change the manner of call AggregateDir like
+
+From
+
+```
+exporter = DirModel::Export::AggregateDir.new(BasicExportDirModel)
+
+exporter.generate do |dir|
+  models.each do |model|
+    dir << model
+  end
+end
+```
+
+
+To
+
+```
+exporter = DirModel::Export::AggregateDir.new
+
+exporter.generate do |dir|
+  models.each do |model|
+    dir.append_model(BasicExportDirModel, model)
+  end
+end
+```
+
+Now you can compose like
+
+```
+exporter = DirModel::Export::AggregateDir.new
+
+exporter.generate do |dir|
+  models.each do |model|
+    dir.append_model(SectorExportDirModel, model)
+  end
+end.generate do |dir|
+  models.each do |model|
+    dir.append_model(ZoneExportDirModel, model)
+  end
+end
+```
+
 # Upgrading from 0.5.1 to 0.6.0
 
 * relation need to have a foreign_key and dir_model related need to have a regex with the foreign_key in params

@@ -25,7 +25,7 @@ end
 class ChildImportDirModel
   include DirModel::Model
   include DirModel::Import
-  file :metadata, regex: ->(foreign_value) { "Zones\\/(?<sector_name>#{foreign_value})\\/Zone_(?<zone_id>.*)\\.(?<extension>json)" }
+  file :metadata, regex: ->(foreign_value) { /Zones\/(?<sector_name>#{foreign_value})\/Zone_(?<zone_id>.*)\.(?<extension>json)/i }
 end
 
 class ParentImportDirModel < BasicImportDirModel
@@ -41,13 +41,13 @@ end
 class ZoneMetadataDirModel
   include DirModel::Model
   include DirModel::Import
-  file :metadata, regex: ->(foreign_value) { "Zones\\/#{foreign_value}\\.(?<extension>json)" }
+  file :metadata, regex: ->(foreign_value) { /Zones\/#{foreign_value}\.(?<extension>json)/i }
 end
 
 class ZoneDirModel
   include DirModel::Model
   include DirModel::Import
-  file :image, regex: ->(foreign_value) { "Zones\\/(?<sector_name>#{foreign_value})\\/Zone_(?<zone_id>.*)\\.(?<extension>png|jpg)" }
+  file :image, regex: ->(foreign_value) { /Zones\/(?<sector_name>#{foreign_value})\/Zone_(?<zone_id>.*)\.(?<extension>png|jpg)/i }
   has_one :metadata, ZoneMetadataDirModel, foreign_key: :sector_zone_name
   def sector_zone_name
     "#{Regexp.quote(sector_name)}\\/zone_#{Regexp.quote(zone_id)}"

@@ -81,7 +81,7 @@ module DirModel
         def has_one(relation_name, dir_model_class, options)
           relation_name = relation_name.to_sym
 
-          merge_has_one_relationship(relation_name => { dir_model_class: dir_model_class }.merge(options))
+          has_one_relationship_object.merge(relation_name => { dir_model_class: dir_model_class }.merge(options))
 
           define_method(:has_one?) do
             true
@@ -113,7 +113,7 @@ module DirModel
           raise "for now, DirModel's has_many may only be called once" if @_has_many_relationship.present?
           relation_name = relation_name.to_sym
 
-          merge_has_many_relationship(relation_name => { dir_model_class: dir_model_class }.merge(options))
+          has_many_relationship_object.merge(relation_name => { dir_model_class: dir_model_class }.merge(options))
 
           define_method(:has_many?) do
             true

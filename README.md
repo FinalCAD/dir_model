@@ -160,10 +160,12 @@ fixture_models = [
   })
 ]
 
-exporter = DirModel::Export::AggregateDir.new(BasicExportDirModel)
+exporter = DirModel::Export::AggregateDir.new
 
 exporter.generate do |dir|
-  models.each { |model| dir << model }
+  models.each do |model|
+    dir.append_model(BasicExportDirModel, model)
+  end
 end
 
 exporter.dir_path # => path of generated dir .../Sectors

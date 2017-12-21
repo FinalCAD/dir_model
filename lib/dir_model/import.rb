@@ -90,11 +90,9 @@ module DirModel
     end
 
     def get_regexp
-      if foreign_value
-        Regexp.new(self.class.options[:regex].call(foreign_value), Regexp::IGNORECASE)
-      else
-        self.class.options[:regex].call
-      end
+      args = []
+      args << foreign_value if foreign_value
+      instance_exec(*args, &self.class.options[:regex])
     end
   end
 end

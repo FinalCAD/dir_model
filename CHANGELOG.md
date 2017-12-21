@@ -1,3 +1,7 @@
+### VERSION 0.7.0
+
+* Change the design of `AggregateDir` to make it composable 
+
 ### VERSION 0.6.2
 
 * Removing escaping from the code, so now `foreign_key` should be escaped on the caller, basically user `Regexp.quote` :
